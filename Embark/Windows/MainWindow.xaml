@@ -1,0 +1,296 @@
+﻿<Window 
+    x:Class="Embark.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:Embark"
+    xmlns:cc="clr-namespace:Embark.CustomControls"
+    xmlns:tool="clr-namespace:Embark.Toolbox"
+    LocationChanged="Window_LocationChanged"
+	Deactivated="Window_Deactivated"
+	Loaded="Window_Loaded" Closing="Window_Closing"
+    WindowStyle="None"
+    AllowsTransparency="True"
+    Background="{StaticResource PrimaryBackground}"
+    BorderBrush="{StaticResource ButtonBorder}" BorderThickness="2"
+	mc:Ignorable="d" Height="768" Width="680">
+    <Window.InputBindings>
+        <KeyBinding Key="F1" Command="{Binding ProcessKeyboardShortcut}" CommandParameter="F1" />
+        <KeyBinding Key="F2" Command="{Binding ProcessKeyboardShortcut}" CommandParameter="F2" />
+        <KeyBinding Key="F3" Command="{Binding ProcessKeyboardShortcut}" CommandParameter="F3" />
+        <KeyBinding Key="F4" Command="{Binding ProcessKeyboardShortcut}" CommandParameter="F4" />
+        <KeyBinding Modifiers="Alt" Key="C" Command="{Binding ProcessKeyboardShortcut}" CommandParameter="AltC" />
+        <KeyBinding Modifiers="Alt" Key="F" Command="{Binding ProcessKeyboardShortcut}" CommandParameter="AltF" />
+        <KeyBinding Modifiers="Alt" Key="N" Command="{Binding ProcessKeyboardShortcut}" CommandParameter="AltN" />
+        <KeyBinding Modifiers="Alt" Key="R" Command="{Binding ProcessKeyboardShortcut}" CommandParameter="AltR" />
+        <KeyBinding Modifiers="Alt" Key="A" Command="{Binding ProcessKeyboardShortcut}" CommandParameter="AltA" />
+        <KeyBinding Modifiers="Alt" Key="S" Command="{Binding ProcessKeyboardShortcut}" CommandParameter="AltS" />
+        <KeyBinding Modifiers="Alt" Key="Q" Command="{Binding ProcessKeyboardShortcut}" CommandParameter="AltQ" />
+        <KeyBinding Modifiers="Alt" Key="Left" Command="{Binding ProcessKeyboardShortcut}" CommandParameter="AltLeft" />
+        <KeyBinding Modifiers="Alt" Key="Right" Command="{Binding ProcessKeyboardShortcut}" CommandParameter="AltRight" />
+        <KeyBinding Modifiers="Ctrl" Key="N" Command="{Binding ProcessKeyboardShortcut}" CommandParameter="CtrlN" />
+        <KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding ProcessKeyboardShortcut}" CommandParameter="CtrlO" />
+        <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding ProcessKeyboardShortcut}" CommandParameter="CtrlS" />
+    </Window.InputBindings>
+    <Window.Resources>
+        <tool:MultiValueConverter x:Key="MultiValueConverter" />
+        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource PartialBorderTextBox}" />
+        <Style TargetType="{x:Type cc:GammaTextBox}" BasedOn="{StaticResource PartialBorderTextBox}" />
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}" />
+        </Style>
+        <Style TargetType="{x:Type cc:FieldLabel}" x:Key="BaseFieldLabel">
+            <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Width" Value="120" />
+            <Setter Property="Margin" Value="4" />
+        </Style>
+        <Style TargetType="{x:Type cc:FieldLabel}" BasedOn="{StaticResource BaseFieldLabel}" />
+        <Style TargetType="{x:Type cc:ColumnHeader}">
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="{x:Type cc:SubsectionHeader}">
+            <Setter Property="Margin" Value="0" />
+        </Style>
+        <Style TargetType="{x:Type TextBlock}" x:Key="Tooltip">
+            <Setter Property="Width" Value="420" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Foreground" Value="{StaticResource TooltipFontColor}" />
+        </Style>
+        <Style TargetType="{x:Type TextBlock}" x:Key="MidChar">
+            <Setter Property="Width" Value="16" />
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="15" />
+        </Style>
+        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource SectionHeader}" />
+        <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource BaseCheckBox}" />
+        <Style TargetType="{x:Type StackPanel}">
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+        <Style TargetType="{x:Type Border}">
+            <Setter Property="BorderBrush" Value="{StaticResource ButtonBorder}" />
+            <Setter Property="BorderThickness" Value="2 0 0 2" />
+        </Style>
+        <Style TargetType="{x:Type cc:GammaComboBox}" BasedOn="{StaticResource CustomComboBox}">
+            <Setter Property="Width" Value="200" />
+            <Setter Property="IsTextSearchEnabled" Value="True" />
+            <Setter Property="IsTextSearchCaseSensitive" Value="False" />
+            <Setter Property="IsEditable" Value="True" />
+            <Setter Property="Foreground" Value="{StaticResource PrimaryFontColor}" />
+        </Style>
+        <Style TargetType="{x:Type Separator}">
+            <Setter Property="Width" Value="4" />
+            <Setter Property="Visibility" Value="Hidden" />
+        </Style>
+        <Style TargetType="{x:Type cc:ImageButton}" BasedOn="{StaticResource ImageButton}" />
+        <Style TargetType="{x:Type Rectangle}" BasedOn="{StaticResource HorizontalDivider}" />
+        <Style TargetType="{x:Type Border}" x:Key="ListBorder">
+            <Setter Property="BorderBrush" Value="{StaticResource ButtonBorder}" />
+            <Setter Property="BorderThickness" Value="0 2" />
+        </Style>
+        <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource BlueTab}">
+            <Setter Property="Width" Value="128" />
+        </Style>
+        <Style TargetType="{x:Type ScrollBar}">
+            <Setter Property="Template" Value="{StaticResource VerticalScrollBar}" />
+        </Style>
+        <Style TargetType="TreeViewItem" BasedOn="{StaticResource DMTreeViewItem}" />
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="{StaticResource ButtonBorder}" />
+        </Style>
+        <Style TargetType="ContextMenu" BasedOn="{StaticResource ThemedContextMenu}" />
+        <Style TargetType="MenuItem" BasedOn="{StaticResource ThemedMenuItem}" />
+        <Style TargetType="StackPanel" x:Key="SPNL_FieldRow">
+            <Setter Property="Orientation" Value="Horizontal" />
+            <Setter Property="Margin" Value="0 4 0 0" />
+        </Style>
+    </Window.Resources>
+    <StackPanel>
+        <DockPanel x:Name="TitleBar" Width="666" MouseDown="Window_MouseDown" Background="Transparent" HorizontalAlignment="Left">
+            <StackPanel Orientation="Horizontal" Margin="8">
+                <Separator />
+                <Image Style="{StaticResource Icon_Directions}" />
+                <Separator />
+                <TextBlock Text="{Binding ApplicationVersion, FallbackValue=Embark}" Foreground="{StaticResource PrimaryFontColor}" VerticalAlignment="Center" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="8">
+                <cc:MiniButton ImageResource="{StaticResource Icon_Minimize}" Click="Minimize_Click" />
+                <Separator />
+                <cc:MiniButton ImageResource="{StaticResource Icon_Window}" Click="ToggleMaximize_Click" />
+                <Separator />
+                <cc:MiniButton ImageResource="{StaticResource Icon_X}" Click="CloseButton_Click" />
+            </StackPanel>
+        </DockPanel>
+        <StackPanel Orientation="Horizontal" Margin="4 0">
+            <StackPanel>
+                <DockPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <Label Content="Job Leads" />
+                        <Separator Width="20" />
+                        <TextBlock Text="{Binding PriorityLeadCount, FallbackValue=00}" Foreground="Orange" VerticalAlignment="Bottom" Margin="2" FontWeight="Bold" FontSize="14" />
+                        <TextBlock Text="{Binding ActiveLeadCount, FallbackValue=00}" Foreground="White" VerticalAlignment="Bottom" Margin="2" FontWeight="Bold" FontSize="14" />
+                        <TextBlock Text="{Binding DeadLeadCount, FallbackValue=00}" Foreground="Gray" VerticalAlignment="Bottom" Margin="2" FontWeight="Bold" FontSize="14" />
+                        <TextBlock Text="|" Foreground="White" VerticalAlignment="Bottom" Margin="2 0 2 3" FontWeight="Bold" FontSize="14" />
+                        <TextBlock Text="{Binding TotalLeadCount, FallbackValue=00}" Foreground="DeepSkyBlue" VerticalAlignment="Bottom" Margin="2" FontWeight="Bold" FontSize="14" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <cc:IconButton ImageResource="{StaticResource Icon_Plus_Green}" Command="{Binding AddJob}" />
+                        <cc:IconButton ImageResource="{StaticResource Icon_Save}" Command="{Binding SaveJobs}" />
+                        <cc:IconButton ImageResource="{StaticResource Icon_Sort}" Command="{Binding SortJobs}" />
+                    </StackPanel>
+                </DockPanel>
+                <ListView x:Name="LST_JobList" ItemsSource="{Binding JobLeads, UpdateSourceTrigger=PropertyChanged}"
+								  SelectedItem="{Binding ActiveJobLead, UpdateSourceTrigger=PropertyChanged}"
+								  Style="{StaticResource BorderedListView}" ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+								  Width="258" Height="670">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel>
+                                <TextBlock Text="{Binding Employer}" Width="184" Margin="4 0" Foreground="{Binding RelativeSource={RelativeSource Self}, Path=DataContext, Converter={tool:JobListFontColor}}">
+                                    <TextBlock.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Delete Entry" Command="{Binding RemoveEntry}" />
+                                        </ContextMenu>
+                                    </TextBlock.ContextMenu>
+                                </TextBlock>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Image Style="{StaticResource Icon_Envelope}" Visibility="{Binding RequiresFollowup, Converter={tool:CollapsedIfFalseOtherwiseVisible}}" />
+                                    <Image Style="{StaticResource Icon_Alert}" Visibility="{Binding HasUpcomingEvent, Converter={tool:CollapsedIfFalseOtherwiseVisible}}" />
+                                </StackPanel>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+            <StackPanel Visibility="{Binding ActiveJobLead, Converter={tool:CollapsedIfNull}, UpdateSourceTrigger=PropertyChanged}" Margin="16 28 0 0">
+                <Label Content="Job Information" />
+                <Rectangle Style="{StaticResource HorizontalDivider}" />
+                <ScrollViewer x:Name="SVR_ActiveJobView" VerticalScrollBarVisibility="Auto" Height="640" Width="auto">
+                    <StackPanel>
+                        <StackPanel Style="{StaticResource SPNL_FieldRow}">
+                            <cc:FieldLabel Text="Employer Name" />
+                            <cc:GammaTextBox Text="{Binding ActiveJobLead.Employer, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource SPNL_FieldRow}">
+                            <cc:FieldLabel Text="Job Name" />
+                            <cc:GammaTextBox Text="{Binding ActiveJobLead.Position, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource SPNL_FieldRow}">
+                            <cc:FieldLabel Text="Priority" />
+                            <cc:GammaComboBox IsEditable="False" Text="{Binding ActiveJobLead.Priority, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding PriorityLevels}" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource SPNL_FieldRow}">
+                            <cc:FieldLabel Text="Active Lead" />
+                            <CheckBox IsChecked="{Binding ActiveJobLead.IsActive}" Margin="-2 0 0 0" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource SPNL_FieldRow}">
+                            <cc:FieldLabel Text="Has Upcoming Event" />
+                            <CheckBox IsChecked="{Binding ActiveJobLead.HasUpcomingEvent}" Margin="-2 0 0 0" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource SPNL_FieldRow}">
+                            <cc:FieldLabel Text="Requires Followup" />
+                            <CheckBox IsChecked="{Binding ActiveJobLead.RequiresFollowup}" Margin="-2 0 0 0" />
+                        </StackPanel>
+                        <StackPanel Style="{StaticResource SPNL_FieldRow}">
+                            <cc:FieldLabel Text="Job Description / Notes" Width="auto" />
+                        </StackPanel>
+                        <cc:GammaTextBox Text="{Binding ActiveJobLead.Notes, UpdateSourceTrigger=PropertyChanged}" Width="360" MinHeight="172" Height="auto" TextWrapping="Wrap" AcceptsReturn="True" SelectAllOnFocus="False" />
+                        <Separator Height="8" />
+                        <DockPanel>
+                            <cc:FieldLabel Text="Links" />
+                            <cc:MiniButton ImageResource="{StaticResource Icon_Plus_Green}" HorizontalAlignment="Right" Command="{Binding ActiveJobLead.AddLink}" />
+                        </DockPanel>
+                        <Rectangle />
+                        <ItemsControl ItemsSource="{Binding ActiveJobLead.Links}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Style="{StaticResource SPNL_FieldRow}" HorizontalAlignment="Right">
+                                        <cc:MiniButton ImageResource="{StaticResource Icon_Initiative}" Command="{Binding OpenUrl}" />
+                                        <Separator />
+                                        <cc:GammaTextBox Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}" Width="300" />
+                                        <Separator />
+                                        <cc:MiniButton ImageResource="{StaticResource Icon_X}" Command="{Binding RemoveLink}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Separator Height="8" />
+                        <DockPanel>
+                            <cc:FieldLabel Text="Contacts" />
+                            <cc:MiniButton ImageResource="{StaticResource Icon_Plus_Green}" HorizontalAlignment="Right" Command="{Binding ActiveJobLead.AddContact}" />
+                        </DockPanel>
+                        <Rectangle />
+                        <ItemsControl ItemsSource="{Binding ActiveJobLead.Contacts}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <StackPanel.Resources>
+                                            <Style TargetType="{x:Type cc:FieldLabel}" BasedOn="{StaticResource BaseFieldLabel}" />
+                                        </StackPanel.Resources>
+                                        <cc:MiniToggleButton ImageResource="{StaticResource Icon_Users}" HorizontalAlignment="Right" IsChecked="{Binding InExpandedView}" VerticalAlignment="Top" Margin="0 4 0 0" />
+                                        <StackPanel>
+                                            <StackPanel Style="{StaticResource SPNL_FieldRow}">
+                                                <cc:FieldLabel Text="Name" Width="64" />
+                                                <cc:GammaTextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Width="232" />
+                                                <Separator />
+                                                <cc:MiniButton ImageResource="{StaticResource Icon_X}" Command="{Binding RemoveContact}" />
+                                            </StackPanel>
+                                            <StackPanel Visibility="{Binding InExpandedView, Converter={tool:CollapsedIfFalseOtherwiseVisible}}">
+                                                <StackPanel Style="{StaticResource SPNL_FieldRow}">
+                                                    <cc:FieldLabel Text="Role" Width="64" Foreground="{StaticResource PrimaryFontColor}" />
+                                                    <cc:GammaTextBox Text="{Binding Role, UpdateSourceTrigger=PropertyChanged}" Width="232" />
+                                                    <Separator />
+                                                </StackPanel>
+                                                <StackPanel Style="{StaticResource SPNL_FieldRow}">
+                                                    <cc:FieldLabel Text="Email" Width="64" Foreground="{StaticResource PrimaryFontColor}" />
+                                                    <cc:GammaTextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Width="232" />
+                                                    <Separator />
+                                                </StackPanel>
+                                                <StackPanel Style="{StaticResource SPNL_FieldRow}">
+                                                    <cc:FieldLabel Text="Phone" Width="64" Foreground="{StaticResource PrimaryFontColor}" />
+                                                    <cc:GammaTextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}" Width="232" />
+                                                    <Separator />
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        
+                        <Separator Height="8" />
+                        <DockPanel>
+                            <cc:FieldLabel Text="Events" />
+                            <cc:MiniButton ImageResource="{StaticResource Icon_Plus_Green}" HorizontalAlignment="Right" Command="{Binding ActiveJobLead.AddEvent}" />
+                        </DockPanel>
+                        <Rectangle />
+                        <ItemsControl ItemsSource="{Binding ActiveJobLead.Events}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Style="{StaticResource SPNL_FieldRow}" HorizontalAlignment="Right">
+                                        <Image Style="{StaticResource Icon_Clock}" Margin="4" />
+                                        <Separator />
+                                        <cc:GammaTextBox Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}" Width="300" />
+                                        <Separator />
+                                        <cc:MiniButton ImageResource="{StaticResource Icon_X}" Command="{Binding RemoveEvent}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+                
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</Window>
